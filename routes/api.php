@@ -19,3 +19,5 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 
 
 Route::post('rooms', ['uses' => 'RoomController@store','middleware'=>'auth.basic']);
+
+Route::put('rooms', ['uses' => 'RoomController@update','middleware'=>'auth.basic']);

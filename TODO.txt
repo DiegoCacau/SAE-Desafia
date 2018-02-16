@@ -1,0 +1,4 @@
+-RoomController.php
+	Validate the json data from chairs
+	update
+	delete
