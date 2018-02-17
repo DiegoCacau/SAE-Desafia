@@ -19,6 +19,7 @@ class CreateEventsTable extends Migration
             $table->string('description');
             $table->float('price', 8, 2);
             $table->timestamp('time');
+            $table->timestamp('finalTime');
             $table->integer('room')->unsigned();
             $table->foreign('room')->references('id')->on('rooms');
             $table->timestamps();

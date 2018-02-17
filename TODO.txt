@@ -1,4 +1,9 @@
 -RoomController.php
-	Validate the json data from chairs
+	delete
+
+
+-EventController.php
+	Check events at same time in the same room
 	update
 	delete
+	show

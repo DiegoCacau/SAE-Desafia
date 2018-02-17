@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Room;
-use Validator;
 
 use Illuminate\Http\Request;
 
@@ -164,6 +163,16 @@ class RoomController extends Controller
 	        	'status' => 'error',
 		  		'message' => 'Verify the data and try again'], 400);
 
+    }
+
+
+    public function show(Request $request){
+    	return Room::all();
+    }
+
+    public function showSelected($id)
+    {
+        return Room::find($id);
     }
 
     
