@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Room;
+use App\Event;
 
 use Illuminate\Http\Request;
 
@@ -166,13 +167,59 @@ class RoomController extends Controller
     }
 
 
-    public function show(Request $request){
+
+    /**
+     * Return all rooms in the database.
+     *
+     * @return Room
+     */
+    public function show(){
     	return Room::all();
     }
 
+
+    /**
+     * Receive a id and return the respective Room, if exists.
+     *
+     * @param  $id
+     * @return Room
+     */
     public function showSelected($id)
     {
         return Room::find($id);
+    }
+
+
+    /**
+     * Receive a id and delete the respective Room, if exists.
+     *
+     * @param  $id
+     * @return status
+     */
+    public function delete($id)
+    {
+
+    	$room = Room::find($id);
+
+    	if(!$room){
+			return response()->json([
+	        	'status' => 'error',
+		  		'message' => 'Inexistent room!'], 400);
+		}
+
+        if(Event::where('room', $id)->first()){
+			$events = Event::where('room', $id)->update([
+				'room' => NULL
+
+			]);
+		}
+
+		$room->delete();
+
+        return response()->json([
+		        	'status' => 'ok'], 204);
+
+
     }
 
     

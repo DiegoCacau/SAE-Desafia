@@ -1,9 +1,7 @@
 -RoomController.php
-	delete
+	alert admin for event without room
 
 
 -EventController.php
 	Check events at same time in the same room
-	update
-	delete
-	show
+	alert users if they have tickets for a deleted event
