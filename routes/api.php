@@ -42,3 +42,8 @@ Route::get('events', ['uses' => 'EventController@show','middleware'=>'auth.basic
 Route::get('events/{id}', ['uses' => 'EventController@showSelected','middleware'=>'auth.basic']);
 
 Route::delete('events/{id}', ['uses' => 'EventController@delete','middleware'=>'auth.basic']);
+
+
+// Sold *********************************************
+
+Route::post('buy', ['uses' => 'SaleController@buy','middleware'=>'auth.basic']);
