@@ -69,4 +69,71 @@ class SaleController extends Controller
 		return $room->chairs;
 
     }
+
+    /**
+     * Receive a id and return the respective Sale, if exists.
+     *
+     * @param  $id
+     * @return Event
+     */
+    public function showSelected($id)
+    {
+    	$request->user()->authorizeRoles(['admin', 'superadmin']);
+
+        return Sold::find($id);
+    }
+
+    /**
+     * Receive a json containing event datails and the id of an existent sale.
+     * Update the selected sale.
+     *
+     * @param  Request $request
+     * @return status
+     */
+    public function update(Request $request){
+
+    	$request->user()->authorizeRoles(['admin', 'superadmin']);
+
+    	$id = $request->input("id");
+    	$chair = $request->input("chair");
+    	$user = $request->input("user");
+    	$eventId = $request->input("event");
+
+
+    	if($id){
+    		$sale = Sold::where('id', $id)->first();
+
+    		$event = Event::where('id', $sale->event)->first();
+
+    		$room = Room::where('id', $event->room)->first();
+
+    		if($room->type == 1){
+    			if($user){
+    				$sold = Sold::where('id', $id)->update([
+						'user' => $user
+					]);
+    			}
+    			else{
+    				return response()->json([
+			        	'status' => 'error',
+				  		'message' => 'Verify the data and try again'], 400);
+    			}
+
+    			return response()->json([
+	        		'status' => 'ok'], 200);
+    		}
+    		else if($room->type == 2){
+
+    		}
+
+    		
+
+    	}
+    	
+
+    	return response()->json([
+	        	'status' => 'error',
+		  		'message' => 'Verify the data and try again'], 400);
+
+    }
 }
