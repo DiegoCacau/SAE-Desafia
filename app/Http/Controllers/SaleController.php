@@ -136,4 +136,30 @@ class SaleController extends Controller
 		  		'message' => 'Verify the data and try again'], 400);
 
     }
+
+    /**
+     * Receive a id and delete the respective Sold, if exists.
+     *
+     * @param  $id
+     * @return status
+     */
+    public function delete($id)
+    {
+    	$request->user()->authorizeRoles(['admin', 'superadmin']);
+
+    	$sold = Sold::find($id);
+
+    	if(!$sold){
+			return response()->json([
+	        	'status' => 'error',
+		  		'message' => 'Inexistent sold!'], 400);
+		}
+
+		$sold->delete();
+
+        return response()->json([
+		        	'status' => 'ok'], 204);
+
+
+    }
 }

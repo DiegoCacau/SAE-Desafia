@@ -7,6 +7,6 @@
 	alert users if they have tickets for a deleted event
 
 -SaleController.php
-	delete (only admin) - and tests
+	delete  -  tests
 	update (for type 2) - and tests
 	buy (type 2) - and tests

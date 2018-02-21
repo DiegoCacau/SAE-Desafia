@@ -228,7 +228,8 @@ class EventController extends Controller
      */
     public function delete($id)
     {
-
+    	$request->user()->authorizeRoles(['admin', 'superadmin']);
+    	
     	$event = Event::find($id);
 
     	if(!$event){
