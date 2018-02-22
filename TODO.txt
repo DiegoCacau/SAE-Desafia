@@ -3,7 +3,7 @@
 
 
 -EventController.php
-	Check events at same time in the same room
+	test events at same time in the same room (new queries)
 	alert users if they have tickets for a deleted event
 
 -SaleController.php

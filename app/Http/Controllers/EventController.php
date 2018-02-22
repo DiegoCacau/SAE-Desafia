@@ -82,13 +82,34 @@ class EventController extends Controller
     		$durationEploded = explode(":", $duration);
     		$finalTimestamp = $initialTimestamp + (intval($durationEploded[0])*60*60) + (intval($durationEploded[1])*60);
 
+    		$start = date("d-m-Y H:i:s",$initialTimestamp);
+    		$end = date("d-m-Y H:i:s",$finalTimestamp);
+
+    		$ev = Event::whereBetween('time', [$start, $end])->where('room', $room)->first();
+    		
+    		if(!$ev){
+    			$ev = Event::whereBetween('finalTime', [$start, $end])->where('room', $room)->first();
+
+
+	    		if($ev){
+	    			return response()->json([
+			        	'status' => 'error',
+				  		'message' => 'Invalid end time!'], 400);
+	    		}
+    		}
+    		else{
+    			return response()->json([
+		        	'status' => 'error',
+			  		'message' => 'Invalid start time!'], 400);
+    		}
+
     		
     		$event = new Event();
 	        $event->name = $name;
 	        $event->description = $description;
 	        $event->price = $price;
-	        $event->time = date("d-m-Y H:i:s",$initialTimestamp);
-	        $event->finalTime = date("d-m-Y H:i:s",$finalTimestamp);
+	        $event->time = $start;
+	        $event->finalTime = $end;
 	        $event->room = $room;
 	        $event->save();
 
@@ -174,13 +195,34 @@ class EventController extends Controller
     		$durationEploded = explode(":", $duration);
     		$finalTimestamp = $initialTimestamp + (intval($durationEploded[0])*60*60) + (intval($durationEploded[1])*60);
 
+    		$start = date("d-m-Y H:i:s",$initialTimestamp);
+    		$end = date("d-m-Y H:i:s",$finalTimestamp);
+
+    		$ev = Event::whereBetween('time', [$start, $end])->where('room', $room)->where('id', '!=' , $id)->first();
+    		
+    		if(!$ev){
+    			$ev = Event::whereBetween('finalTime', [$start, $end])->where('room', $room)->where('id', '!=' , $id)->first();
+
+
+	    		if($ev){
+	    			return response()->json([
+			        	'status' => 'error',
+				  		'message' => 'Invalid end time!'], 400);
+	    		}
+    		}
+    		else{
+    			return response()->json([
+		        	'status' => 'error',
+			  		'message' => 'Invalid start time!'], 400);
+    		}
+
 
 	        $event = Event::where('id', $id)->update([
 					'name' => $name,
 					'description' => $description,
 					'price' => $price,
-					'time' => date("d-m-Y H:i:s",$initialTimestamp),
-					'finalTime' => date("d-m-Y H:i:s",$finalTimestamp),
+					'time' => $start,
+					'finalTime' => $end,
 					'room' => $room
 
 				]);
@@ -229,7 +271,7 @@ class EventController extends Controller
     public function delete($id)
     {
     	$request->user()->authorizeRoles(['admin', 'superadmin']);
-    	
+
     	$event = Event::find($id);
 
     	if(!$event){
